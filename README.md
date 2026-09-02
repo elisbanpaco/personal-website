@@ -1,43 +1,54 @@
-# Astro Starter Kit: Minimal
+# Elisban Pacco — Engineering Portfolio & Archive
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+A high-performance, minimalist personal portfolio and engineering archive built to showcase backend architectures, applied machine learning systems, and C++ algorithmic engines.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+![Astro](https://img.shields.io/badge/Astro-0C1120?style=for-the-badge&logo=astro&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)
+![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-## 🚀 Project Structure
+## 🎨 Design Inspiration
 
-Inside of your Astro project, you'll see the following folders and files:
+The visual language, minimalist typography, and sleek monochromatic archival table are heavily inspired by the phenomenal portfolio of [Brittany Chiang](https://brittanychiang.com/). The goal was to adopt a clean, distraction-free aesthetic that allows complex engineering work to speak for itself without the noise of heavy UI elements.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## 🏗️ Architecture & Tech Stack
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+This project is engineered for speed and maintainability:
+- **Astro**: Leveraged for its zero-JS-by-default architecture, providing perfect Lighthouse scores and instantaneous page loads.
+- **Tailwind CSS**: For strict, utility-first styling without external CSS bloat.
+- **TypeScript**: Ensuring strict type safety across project data schemas and component props.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🚀 Local Development
 
-Any static assets, like images, can be placed in the `public/` directory.
+Want to explore the code or fork this for your own portfolio? It's easy to get started.
 
-## 🧞 Commands
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/elisbanpaco/personal-website.git
+   cd personal-website
+   ```
 
-All commands are run from the root of the project, from a terminal:
+2. **Install dependencies (pnpm recommended):**
+   ```bash
+   pnpm install
+   ```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+3. **Start the local development server:**
+   ```bash
+   pnpm dev
+   ```
+   Navigate to `http://localhost:4321` to see the site live.
 
-## 👀 Want to learn more?
+## 🛠️ Making it Your Own
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+If you fork this repository, you don't need to hunt through HTML to change the content. Everything is statically driven by type-safe data files.
+
+Simply update the data structures in the `src/data/` directory:
+- `src/data/profile.ts`: Update your name, bio, social links, and current tech stack.
+- `src/data/projects.ts`: Add your own projects, links, and technologies.
+- `src/data/experience.ts`: Map out your career timeline.
+
+## 📄 License
+
+The codebase is open-sourced under the MIT License. Feel free to use the code, but please ensure you replace all personal data, projects, and images with your own before deploying. And if you use the design, don't forget to pass on the credit to Brittany Chiang!
