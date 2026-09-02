@@ -1,0 +1,121 @@
+---
+import type { Project } from '../data/projects';
+import { Image } from 'astro:assets';
+import { getProjectAsset } from '../utils/images';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const projectAsset = getProjectAsset(project.slug);
+
+// Specific SVG icons/schematics for each project category/type
+const projectThumbnails: Record<string, { icon: string; label: string }> = {
+  'adaptive-learning-recsys': {
+    icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>`,
+    label: 'MLOps Pipeline'
+  },
+  'mahalanobis-career-recsys': {
+    icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="17" r="3"/><circle cx="17" cy="7" r="3"/><path d="M9.5 14.5l5-5"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 2"/></svg>`,
+    label: 'Mahalanobis AI'
+  },
+  'compression-distance-mst-analysis': {
+    icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7.5l8 9M16 7.5L8 16.5M6 8.5v7"/></svg>`,
+    label: 'C++17 MST Engine'
+  },
+  'brevio-url-shortener': {
+    icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`,
+    label: 'Brevio Platform'
+  },
+  'platanito-publishing-platform': {
+    icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
+    label: 'Edge Editorial'
+  },
+  'eutrophication-lake-titicaca': {
+    icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3-4 5-4 5 4 5 4 3-4 5-4 5 4 5 4"/><path d="M2 17s3-4 5-4 5 4 5 4 3-4 5-4 5 4 5 4"/></svg>`,
+    label: 'Satellite AI'
+  }
+};
+
+const thumb = projectThumbnails[project.slug] || {
+  icon: `<svg class="w-7 h-7 text-blue-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
+  label: project.category
+};
+---
+
+<li class="mb-12">
+  <div class="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100! lg:group-hover/list:opacity-60">
+    <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-slate-50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(0,0,0,0.05)]"></div>
+    
+    <div class="z-10 sm:order-2 sm:col-span-6">
+      <h3 class="leading-snug">
+        <a
+          class="inline-flex items-baseline font-bold text-lg text-slate-900 hover:text-blue-600 focus-visible:text-blue-600 group/link transition-colors"
+          href={project.githubUrl || project.liveUrl || '#'}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${project.title} (opens external link)`}
+        >
+          <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+          <span>
+            {project.title}
+            <span class="inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none ml-1 translate-y-px text-blue-600" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path>
+              </svg>
+            </span>
+          </span>
+        </a>
+      </h3>
+
+      <div class="text-xs font-mono text-slate-500 mt-1">
+        {project.tagline}
+      </div>
+
+      <p class="mt-2 text-sm leading-relaxed text-slate-600">
+        {project.overview}
+      </p>
+
+      {project.metrics && project.metrics.length > 0 && (
+        <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700">
+          <span>
+            <strong class="text-slate-900">{project.metrics[0].label}:</strong> {project.metrics[0].value}
+          </span>
+        </div>
+      )}
+
+      {project.tags && (
+        <ul class="mt-3.5 flex flex-wrap gap-1.5" aria-label="Technologies used">
+          {project.tags.map((tag) => (
+            <li>
+              <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-mono font-medium text-slate-50 bg-slate-800">
+                {tag}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <!-- Left visual thumbnail card (Option 2 - Brittany Chiang Original Style) -->
+    <div class="z-10 sm:order-1 sm:col-span-2 mt-1">
+      <div class="w-full max-w-32.5 rounded-lg border-2 border-slate-200 bg-slate-50/90 group-hover:border-blue-400/80 group-hover:bg-blue-50/40 transition-all p-2 flex flex-col items-center justify-center text-center shadow-xs overflow-hidden">
+        {projectAsset ? (
+          <Image
+            src={projectAsset}
+            alt={`${project.title} Preview`}
+            width={240}
+            height={135}
+            class="rounded w-full h-auto object-cover aspect-video"
+          />
+        ) : (
+          <div set:html={thumb.icon} />
+          <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-700 group-hover:text-blue-600 transition-colors">
+            {project.num} // {thumb.label}
+          </span>
+        )}
+      </div>
+    </div>
+  </div>
+</li>
