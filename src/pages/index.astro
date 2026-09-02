@@ -1,17 +1,117 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeaderSidebar from '../components/HeaderSidebar.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
+import ProjectListItem from '../components/ProjectListItem.astro';
+import { experiences } from '../data/experience';
+import { projects } from '../data/projects';
 
+// Only display top selected projects on main page according to CV
+const featuredProjects = projects.filter((p) => p.featured);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <div class="mx-auto min-h-screen max-w-360 px-6 py-12 font-sans md:px-12 md:py-20 lg:px-16 xl:px-20 lg:py-0">
+    <div class="lg:flex lg:justify-between lg:gap-12 xl:gap-20">
+      <!-- Left Column: Fixed / Sticky Header & Nav -->
+      <HeaderSidebar />
+
+      <!-- Right Column: Scrollable Content (About, Experience, Projects) -->
+      <main id="content" class="pt-24 lg:w-[60%] xl:w-[62%] lg:py-24 space-y-24 sm:space-y-32">
+        <!-- Section 1: ABOUT -->
+        <section id="about" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="About me">
+          <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-white/90 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-blue-600 lg:sr-only">About</h2>
+          </div>
+          
+          <div class="space-y-5 text-slate-600 text-base leading-relaxed">
+            <p>
+              Hi there! I'm <strong class="font-bold text-slate-900">Elisban</strong>, and I love building robust systems. I'm a software engineer specialized in <strong class="font-bold text-slate-900">backend architecture</strong>, <strong class="font-bold text-slate-900">data pipelines</strong>, and <strong class="font-bold text-slate-900">applied machine learning</strong>. I take pride in turning messy, large-scale data into clean, deterministic software that people can rely on. I enjoy working most at the intersection of algorithmic depth and practical systems engineering—where solid mathematical foundations meet high-performance code.
+            </p>
+            
+            <p>
+              Currently, I architect high-throughput backend services and serverless <strong class="font-bold text-slate-900">MLOps workflows</strong>. I'm also the creator of production platforms like <a href="https://brevio.link" target="_blank" rel="noreferrer" class="font-bold text-blue-600 hover:underline">brevio.link</a> (a high-speed URL platform built with island architecture) and <a href="https://platanito.dev" target="_blank" rel="noreferrer" class="font-bold text-blue-600 hover:underline">platanito.dev</a> (an edge-distributed editorial platform). I care deeply about latency budgets, reproducible pipelines, and clean relational database modeling.
+            </p>
+
+            <p>
+              Over the past few years, I’ve built across a wide spectrum of environments—from engineering citizen-facing mobile applications for the <strong class="font-bold text-slate-900">Municipality of Coasa</strong> and core institutional APIs at <strong class="font-bold text-slate-900">UNAP</strong>, to architecting causal Bayesian networks for <strong class="font-bold text-slate-900">Cybersecurity AI</strong> and building high-performance systems in <strong class="font-bold text-slate-900">C++</strong>. These experiences taught me that the best systems are not the most complex ones, but the simplest abstractions that solve the problem reliably.
+            </p>
+
+            <p>
+              When I'm not profiling database queries or training models, you can usually find me tackling algorithmic puzzles in competitive programming contests, exploring the high-altitude landscapes of <strong class="font-bold text-slate-900">Puno</strong>, or diving into computer science papers on information theory.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 2: EXPERIENCE -->
+        <section id="experience" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Work experience">
+          <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-white/90 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-blue-600 lg:sr-only">Experience</h2>
+          </div>
+
+          <div>
+            <ol class="group/list">
+              {experiences.map((exp) => (
+                <ExperienceCard experience={exp} />
+              ))}
+            </ol>
+
+            <div class="mt-12">
+              <a
+                class="inline-flex items-baseline font-bold leading-tight text-slate-900 hover:text-blue-600 focus-visible:text-blue-600 group/link text-base transition-colors"
+                href="/resume.pdf"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="View Full Résumé (opens in a new tab)"
+              >
+                <span>
+                  View Full Résumé
+                  <span class="inline-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none ml-1 translate-y-px text-blue-600" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path></svg>
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: PROJECTS -->
+        <section id="projects" class="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24" aria-label="Selected projects">
+          <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-white/90 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-blue-600 lg:sr-only">Projects</h2>
+          </div>
+
+          <div>
+            <ul class="group/list">
+              {featuredProjects.map((project) => (
+                <ProjectListItem project={project} />
+              ))}
+            </ul>
+
+            <div class="mt-12">
+              <a
+                class="inline-flex items-baseline font-bold leading-tight text-slate-900 hover:text-blue-600 focus-visible:text-blue-600 group/link text-base transition-colors"
+                href="/archive"
+                aria-label="View Full Project Archive (opens archive page)"
+              >
+                <span>
+                  View Full Project Archive
+                  <span class="inline-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none ml-1 translate-y-px text-blue-600" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"></path></svg>
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Minimalist Footer -->
+        <footer class="max-w-md pb-16 text-xs text-slate-500 sm:pb-0 leading-relaxed font-sans">
+          <p>
+            Designed with precision and coded in Visual Studio Code. Built with <a href="https://astro.build/" target="_blank" rel="noreferrer noopener" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Astro</a> and <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer noopener" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Tailwind CSS</a>, deployed on Vercel. All text is set in the <span class="text-slate-700 font-medium">Inter</span> typeface.
+          </p>
+        </footer>
+      </main>
+    </div>
+  </div>
+</BaseLayout>
