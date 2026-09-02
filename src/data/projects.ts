@@ -115,7 +115,7 @@ export const projects: Project[] = [
   {
     num: "05",
     slug: "platanito-publishing-platform",
-    title: "Platanito.dev - High-Performance Editorial Publishing Platform",
+    title: "toBlog -High-Performance Editorial Publishing Platform",
     shortTitle: "Platanito.dev Platform",
     tagline: "A high-speed publishing platform that allows writers to create, manage, and share editorial articles globally.",
     category: "Full Stack",
