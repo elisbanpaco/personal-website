@@ -8,10 +8,14 @@ interface Props {
 }
 
 const {
-  title = "Elisban Pacco | Software Engineer · AI · Data",
-  description = "Software Engineer & Systems Practitioner. I build systems that turn data into useful software.",
-  ogImage = "/og-image.png"
+  title = "Elisban Pacco | Lead Backend & AI Engineer",
+  description = "Backend Software Engineer & AI Practitioner specialized in high-performance architectures, data pipelines, and machine learning systems.",
+  ogImage = "/foto_perfil.png"
 } = Astro.props;
+
+// Generate canonical URL and absolute image URL for SEO
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+const socialImageURL = new URL(ogImage, Astro.site || Astro.url.origin);
 ---
 
 <!doctype html>
@@ -22,26 +26,31 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content="Elisban Pacco Accha" />
-    <meta name="keywords" content="Software Engineer, Backend, AI, Machine Learning, Data Systems, MLOps, PostGIS, C++, PyTorch, Python, Spring Boot, Puno, Peru" />
+    <meta name="keywords" content="Software Engineer, Backend, AI, Machine Learning, Data Systems, MLOps, System Design, C++, Python, TypeScript, PostGIS, Puno, Peru" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={socialImageURL} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={ogImage} />
+    <meta property="twitter:image" content={socialImageURL} />
   </head>
-  <body class="bg-white text-slate-700 antialiased min-h-screen relative selection:bg-blue-100 selection:text-blue-900">
+  <body class="bg-white text-slate-700 antialiased min-h-screen relative selection:bg-teal-100 selection:text-teal-900">
     <div class="relative z-10">
       <slot />
     </div>
