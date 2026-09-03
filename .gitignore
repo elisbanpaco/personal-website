@@ -53,3 +53,4 @@ Thumbs.db
 # Project-specific ignores
 /resume/
 *.pdf
+.vercel
