@@ -81,8 +81,8 @@ const socialLinks = [
               aria-current={index === 0 ? "page" : undefined}
               class="nav-link group flex items-center py-2.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
             >
-              <span class="nav-indicator mr-4 h-px w-8 bg-slate-300 transition-all duration-200 group-hover:w-16 group-hover:bg-blue-600 group-focus-visible:w-16 group-focus-visible:bg-blue-600" />
-              <span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-200 group-hover:text-blue-600 group-focus-visible:text-blue-600">
+              <span class="nav-indicator mr-4 h-px w-8 bg-slate-300 transition-all duration-200 group-hover:w-16 group-hover:bg-blue-600 group-focus-visible:w-16 group-focus-visible:bg-blue-600 group-data-[active=true]:w-16 group-data-[active=true]:bg-blue-600" />
+              <span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-200 group-hover:text-blue-600 group-focus-visible:text-blue-600 group-data-[active=true]:text-blue-600">
                 {item.label}
               </span>
             </a>
@@ -125,18 +125,28 @@ const socialLinks = [
   </ul>
 </aside>
 
+<style>
+  .nav-link[data-active="true"] .nav-indicator {
+    width: 4rem;
+    background-color: #2563eb;
+  }
+  .nav-link[data-active="true"] .nav-text {
+    color: #2563eb;
+  }
+</style>
+
 <!-- Scrollspy script: Declarative, leak-free, edge-case safe -->
 <script>
-  let activeObserver: IntersectionObserver | null = null;
+  let scrollHandler: (() => void) | null = null;
 
   function setupScrollSpy() {
-    // Prevent memory leaks on page transitions
-    if (activeObserver) {
-      activeObserver.disconnect();
+    if (scrollHandler) {
+      window.removeEventListener('scroll', scrollHandler);
+      scrollHandler = null;
     }
 
-    const sections = document.querySelectorAll<HTMLElement>('section[id]');
-    const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav a[data-section]');
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
+    const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav a[data-section]'));
 
     if (!sections.length || !navLinks.length) return;
 
@@ -161,34 +171,48 @@ const socialLinks = [
       });
     });
 
-    activeObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            setActiveSection(id);
-          }
-        });
-      },
-      {
-        rootMargin: '-20% 0px -55% 0px',
-        threshold: 0.1,
+    let ticking = false;
+    function updateActiveSection() {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      // Top edge case: at or near top of page
+      if (scrollPosition < 80) {
+        setActiveSection(sections[0].getAttribute('id'));
+        return;
       }
-    );
 
-    sections.forEach((sec) => activeObserver?.observe(sec));
+      // Bottom edge case: reached bottom of page
+      if (scrollPosition + windowHeight >= docHeight - 50) {
+        setActiveSection(sections[sections.length - 1].getAttribute('id'));
+        return;
+      }
 
-    // Handle edge case: User scrolled to the very bottom of the page
-    function handleBottomScroll() {
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
-        const lastSection = sections[sections.length - 1];
-        if (lastSection) {
-          setActiveSection(lastSection.getAttribute('id'));
+      // Standard detection: section passing the trigger point (35% from top of viewport)
+      const triggerPoint = windowHeight * 0.35;
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= triggerPoint && rect.bottom > triggerPoint) {
+          setActiveSection(section.getAttribute('id'));
+          return;
         }
       }
     }
 
-    window.addEventListener('scroll', handleBottomScroll, { passive: true });
+    scrollHandler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    // Initial check on load
+    updateActiveSection();
   }
 
   setupScrollSpy();
