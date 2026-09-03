@@ -1,11 +1,51 @@
 ---
 import { profile } from '../data/profile';
+
+// Clean, DRY navigation structure
+const navItems = [
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Experience', href: '#experience', id: 'experience' },
+  { label: 'Projects', href: '#projects', id: 'projects' },
+];
+
+// Structured social links for maintainability
+const socialLinks = [
+  {
+    name: 'GitHub',
+    href: profile.github,
+    svgPath: "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+  },
+  {
+    name: 'LinkedIn',
+    href: profile.linkedin,
+    svgPath: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+  },
+  {
+    name: 'X (Twitter)',
+    href: profile.x,
+    svgPath: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+  }
+];
 ---
 
 <aside class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[40%] xl:w-[38%] lg:flex-col lg:justify-between lg:py-24 py-12">
   <div>
+    <!-- Profile avatar with availability badge -->
+    <div class="relative mb-6 inline-block">
+      <img
+        src="/foto_perfil.png"
+        alt={`Portrait of ${profile.preferredName || profile.name}`}
+        width="160"
+        height="160"
+        loading="eager"
+        decoding="async"
+        class="h-32 w-32 rounded-full object-cover object-top shadow-md ring-1 ring-slate-900/10 sm:h-40 sm:w-40"
+      />
+    </div>
+
+    <!-- Name and title -->
     <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
-      <a href="/" class="hover:text-blue-600 transition-colors">
+      <a href="/" class="hover:text-blue-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded">
         {profile.preferredName || profile.name}
       </a>
     </h1>
@@ -14,94 +54,70 @@ import { profile } from '../data/profile';
       {profile.role}
     </h2>
 
-    <p class="mt-4 max-w-xs leading-relaxed text-slate-600 text-sm sm:text-base">
+    <p class="mt-4 max-w-xs text-sm sm:text-base leading-relaxed text-slate-600">
       {profile.tagline}
     </p>
 
-    <!-- Navigation List: Exactly 3 items (ABOUT, EXPERIENCE, PROJECTS) -->
-    <nav class="nav hidden lg:block mt-16" aria-label="In-page jump links">
+    <!-- Geographic location badge -->
+    {profile.location && (
+      <div class="mt-3 flex items-center gap-1.5 text-xs font-medium text-slate-500">
+        <svg class="h-3.5 w-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>{profile.location}</span>
+      </div>
+    )}
+
+    <!-- Navigation List: Declarative & Accessible -->
+    <nav class="nav hidden lg:block mt-16" aria-label="Table of contents">
       <ul class="space-y-4">
-        <li>
-          <a class="group flex items-center py-3 active-nav-link" href="#about" data-section="about">
-            <span class="nav-indicator mr-4 h-px w-8 bg-slate-300 transition-all group-hover:w-16 group-hover:bg-blue-600 group-focus-visible:w-16 group-focus-visible:bg-blue-600"></span>
-            <span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-blue-600 group-focus-visible:text-blue-600 transition-colors">ABOUT</span>
-          </a>
-        </li>
-        <li>
-          <a class="group flex items-center py-3" href="#experience" data-section="experience">
-            <span class="nav-indicator mr-4 h-px w-8 bg-slate-300 transition-all group-hover:w-16 group-hover:bg-blue-600 group-focus-visible:w-16 group-focus-visible:bg-blue-600"></span>
-            <span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-blue-600 group-focus-visible:text-blue-600 transition-colors">EXPERIENCE</span>
-          </a>
-        </li>
-        <li>
-          <a class="group flex items-center py-3" href="#projects" data-section="projects">
-            <span class="nav-indicator mr-4 h-px w-8 bg-slate-300 transition-all group-hover:w-16 group-hover:bg-blue-600 group-focus-visible:w-16 group-focus-visible:bg-blue-600"></span>
-            <span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-blue-600 group-focus-visible:text-blue-600 transition-colors">PROJECTS</span>
-          </a>
-        </li>
+        {navItems.map((item, index) => (
+          <li>
+            <a
+              href={item.href}
+              data-section={item.id}
+              data-active={index === 0 ? "true" : "false"}
+              aria-current={index === 0 ? "page" : undefined}
+              class="nav-link group flex items-center py-2.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
+            >
+              <span class="nav-indicator mr-4 h-px w-8 bg-slate-300 transition-all duration-200 group-hover:w-16 group-hover:bg-blue-600 group-focus-visible:w-16 group-focus-visible:bg-blue-600" />
+              <span class="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors duration-200 group-hover:text-blue-600 group-focus-visible:text-blue-600">
+                {item.label}
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </div>
 
-  <!-- Social Icons at Bottom Left -->
-  <ul class="ml-1 mt-8 flex items-center gap-5 text-slate-400" aria-label="Social media">
-    <!-- GitHub -->
-    <li class="mr-5 text-xs">
-      <a
-        href={profile.github}
-        target="_blank"
-        rel="noreferrer noopener"
-        class="block hover:text-black transition-colors"
-        aria-label="GitHub Profile"
-      >
-        <span class="sr-only">GitHub</span>
-        <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-        </svg>
-      </a>
-    </li>
-
-    <!-- LinkedIn -->
-    <li class="mr-5 text-xs">
-      <a
-        href={profile.linkedin}
-        target="_blank"
-        rel="noreferrer noopener"
-        class="block hover:text-blue-600 transition-colors"
-        aria-label="LinkedIn Profile"
-      >
-        <span class="sr-only">LinkedIn</span>
-        <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
-          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-        </svg>
-      </a>
-    </li>
-
-    <!-- X / Twitter -->
-    <li class="mr-5 text-xs">
-      <a
-        href={profile.x}
-        target="_blank"
-        rel="noreferrer noopener"
-        class="block hover:text-black transition-colors"
-        aria-label="X Profile"
-      >
-        <span class="sr-only">X</span>
-        <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-      </a>
-    </li>
+  <!-- Social Icons with comfortable touch targets and uniform hover effects -->
+  <ul class="mt-8 flex items-center gap-2 text-slate-400" aria-label="Social media">
+    {socialLinks.map((social) => (
+      <li>
+        <a
+          href={social.href}
+          target="_blank"
+          rel="noreferrer noopener"
+          class="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 transition-all duration-150 hover:-translate-y-0.5 hover:bg-slate-100 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+          aria-label={social.name}
+        >
+          <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d={social.svgPath} />
+          </svg>
+        </a>
+      </li>
+    ))}
 
     <!-- Email -->
-    <li class="mr-5 text-xs">
+    <li>
       <a
         href={`mailto:${profile.email}`}
-        class="block hover:text-blue-600 transition-colors"
-        aria-label="Email"
+        class="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 transition-all duration-150 hover:-translate-y-0.5 hover:bg-slate-100 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+        aria-label="Send email"
       >
-        <span class="sr-only">Email</span>
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       </a>
@@ -109,43 +125,70 @@ import { profile } from '../data/profile';
   </ul>
 </aside>
 
-<!-- Active scrollspy script -->
+<!-- Scrollspy script: Declarative, leak-free, edge-case safe -->
 <script>
+  let activeObserver: IntersectionObserver | null = null;
+
   function setupScrollSpy() {
+    // Prevent memory leaks on page transitions
+    if (activeObserver) {
+      activeObserver.disconnect();
+    }
+
     const sections = document.querySelectorAll<HTMLElement>('section[id]');
     const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav a[data-section]');
 
     if (!sections.length || !navLinks.length) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(link => {
-            const isMatch = link.getAttribute('data-section') === id;
-            const indicator = link.querySelector('.nav-indicator');
-            const text = link.querySelector('.nav-text');
-            
-            if (isMatch) {
-              indicator?.classList.remove('w-8', 'bg-slate-300');
-              indicator?.classList.add('w-16', 'bg-blue-600');
-              text?.classList.remove('text-slate-500');
-              text?.classList.add('text-blue-600');
-            } else {
-              indicator?.classList.remove('w-16', 'bg-blue-600');
-              indicator?.classList.add('w-8', 'bg-slate-300');
-              text?.classList.remove('text-blue-600');
-              text?.classList.add('text-slate-500');
-            }
-          });
+    function setActiveSection(id: string | null) {
+      if (!id) return;
+      navLinks.forEach((link) => {
+        const isMatch = link.getAttribute('data-section') === id;
+        link.dataset.active = isMatch ? 'true' : 'false';
+        if (isMatch) {
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.removeAttribute('aria-current');
         }
       });
-    }, {
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: 0.1
+    }
+
+    // Handle immediate update on click
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        const targetId = link.getAttribute('data-section');
+        setActiveSection(targetId);
+      });
     });
 
-    sections.forEach(sec => observer.observe(sec));
+    activeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            setActiveSection(id);
+          }
+        });
+      },
+      {
+        rootMargin: '-20% 0px -55% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    sections.forEach((sec) => activeObserver?.observe(sec));
+
+    // Handle edge case: User scrolled to the very bottom of the page
+    function handleBottomScroll() {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+        const lastSection = sections[sections.length - 1];
+        if (lastSection) {
+          setActiveSection(lastSection.getAttribute('id'));
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleBottomScroll, { passive: true });
   }
 
   setupScrollSpy();
